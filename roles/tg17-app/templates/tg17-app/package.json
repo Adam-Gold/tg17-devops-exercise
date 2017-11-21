@@ -1,0 +1,6 @@
+{
+  "name": "{{ application_name }}",
+  "version": "{{ version }}",
+  "description": "TG-17 DevOps FTW!",
+  "main": "app.js"
+}

@@ -1,0 +1,8 @@
+---
+
+container_name: "tg17"
+version: "1.0.0"
+application_name: "tg17-app"
+expose_port: 8080
+port_mapping:
+  - "{{expose_port}}:{{expose_port}}"

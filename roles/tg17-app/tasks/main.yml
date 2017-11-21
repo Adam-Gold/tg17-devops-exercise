@@ -1,0 +1,41 @@
+---
+
+- name: Create tg-17 app directory
+  file:
+    path: "/tmp/{{ application_name }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    state: directory
+    mode: 0755
+
+- name: generate tg-17 app
+  template:
+    src: "{{ item }}"
+    dest: "/tmp/{{ application_name }}/{{ item | basename }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: 0755
+  with_fileglob:
+    - ../templates/{{ application_name }}/*
+
+- name: Generate TG-17 Dockerfile
+  template:
+    src: Dockerfile
+    dest: /tmp/
+    owner: "{{ansible_user_id}}"
+    group: "{{ansible_user_id}}"
+    mode: 0755
+
+- name: Build TG-17 Docker-Image
+  docker_image:
+    path: /tmp/
+    name: "{{ application_name }}"
+    tag: "{{ version }}"
+
+- name: Run TG-17 Container
+  docker_container:
+    name: "{{ container_name }}"
+    image: "{{ application_name }}:{{ version }}"
+    state: started
+    restart_policy: always
+    ports: "{{ port_mapping }}"
