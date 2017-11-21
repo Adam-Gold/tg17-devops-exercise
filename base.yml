@@ -1,0 +1,15 @@
+---
+- name: Common tasks FTW
+  hosts: all
+  become: yes
+  pre_tasks:
+    - name: Set hostname
+      hostname: name={{inventory_hostname}}
+
+- name: Deploy TG-17 Services
+  hosts: base
+  become: yes
+  roles:
+    - { role: docker, tags: docker }
+    - { role: tg17-app, tags: tg17-app }
+
